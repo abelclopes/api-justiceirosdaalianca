@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Model;
 using Scraffold;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace api.Controllers
 {
@@ -20,40 +21,35 @@ namespace api.Controllers
 
         // GET api/values
         [HttpGet]
-        public List<PostsModel> Get()
+        [SwaggerResponse(201)]
+        [SwaggerResponse(401)]
+        [SwaggerResponse(403)]
+        public ListaPaginada<PostsModel> Get([FromQuery] ParametrosPaginacao model)
         {
-            var Posts = new List<PostsModel>();
-            Posts = RestornaPostsList();
-
-            return Posts;
+            var posts = new List<PostsModel>();
+            posts = RestornaPostsList();
+            if (posts == null)
+            {
+                posts = posts.Where(x => x.Titulo.ToLower().Contains(model.buscaTermo.ToLower())).ToList();
+            }
+            var listaPaginada = new ListaPaginada<PostsModel>(model.PageNumber, model.PageSize);
+            return listaPaginada.Carregar(posts);
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        [SwaggerResponse(201)]
+        [SwaggerResponse(401)]
+        [SwaggerResponse(403)]
+
+        public ActionResult<PostsModel> Get(int id)
         {
-            return "value";
+            if (!string.IsNullOrEmpty(id.ToString()))
+            {
+                return Ok(RestornaPostsList().Find(x => x.Id == id));
+            }
+            return Ok(new { Response = "Nenhum Resultado Encontrado" });
         }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-
-
         private List<PostsModel> RestornaPostsList()
         {
             return MemoryCache.GetOrCreate("posts", entry =>
@@ -61,12 +57,12 @@ namespace api.Controllers
                                       entry.AbsoluteExpiration = DateTime.UtcNow.AddDays(1);
                                       return Context.Posts
                                   .Select(x => new PostsModel
-                                      {
-                                          Id = x.Id,
-                                          Titulo = x.Titulo,
-                                          Descricao = x.Descricao,
-                                          DataCreate = x.DataCreate
-                                      }).ToList();
+                                  {
+                                      Id = x.Id,
+                                      Titulo = x.Titulo,
+                                      Descricao = x.Descricao,
+                                      DataCreate = x.DataCreate
+                                  }).ToList();
                                   });
         }
     }
