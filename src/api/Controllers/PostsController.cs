@@ -28,7 +28,7 @@ namespace api.Controllers
         {
             var posts = new List<PostsModel>();
             posts = RestornaPostsList();
-            if (posts == null)
+            if (posts != null)
             {
                 posts = posts.Where(x => x.Titulo.ToLower().Contains(model.buscaTermo.ToLower())).ToList();
             }
