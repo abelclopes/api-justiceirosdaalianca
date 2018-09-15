@@ -21,8 +21,8 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using api.Data;
 using Interfaces;
+using Scraffold;
 
 namespace api
 {
@@ -41,7 +41,7 @@ namespace api
             // services.AddDbContext<ApplicationDbContext>(
             //     options =>options.UseSqlite("Data Source=MvcEmployee.db")
             // );  
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<JusticeirosdaaContext>(options =>
                  //options.UseSqlServer(
                  options.UseMySql(                    
                      Configuration.GetConnectionString("DefaultConnection"),
@@ -89,7 +89,7 @@ namespace api
 
         private void ResolveDependencies(IServiceCollection services)
         {           
-            services.AddScoped<IContext, ApplicationDbContext>();
+            services.AddScoped<IContext, JusticeirosdaaContext>();
         }
 
         private void Autorizacao(IServiceCollection services)

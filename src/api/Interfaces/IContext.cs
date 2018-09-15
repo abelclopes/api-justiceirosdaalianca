@@ -4,18 +4,18 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
-using Model;
+using Scraffold;
 
 namespace Interfaces
 {
     public interface IContext
     {
-        DbSet<Usuario> Usuarios { get; set; }
-        DbSet<Permissao> Permissoes { get; set; }
-        DbSet<UsuarioPermissao> UsuarioPermissoes { get; set; }
-        DbSet<Posts> Propostas { get; set; }
-        DbSet<PostsAnexo> PropostaAnexos { get; set; }
-        DbSet<Categoria> Categorias { get; set; }        
+        DbSet<Categorias> Categorias { get; set; }  
+        DbSet<Usuarios> Usuarios { get; set; }
+        DbSet<Contatos> Contatos { get; set; }
+        DbSet<Spec> Spec { get; set; }
+        DbSet<Posts> Posts { get; set; }
+        DbSet<Character> Character { get; set; }      
         DatabaseFacade Database { get; }
         Task<int> SaveChangesAsync();
         int SaveChanges();
