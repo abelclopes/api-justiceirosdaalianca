@@ -1,8 +1,9 @@
-FROM microsoft/aspnetcore-build AS builder
-WORKDIR /source
+FROM microsoft/dotnet:2.1-aspnetcore-runtime  AS base
+WORKDIR /app
 
+FROM microsoft/dotnet:2.1-sdk AS builder
 COPY . .
-RUN dotnet restore
+RUN dotnet restore  
 RUN dotnet publish --output /app/ --configuration Release
 
 FROM microsoft/aspnetcore
