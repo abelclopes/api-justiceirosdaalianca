@@ -1,4 +1,5 @@
-"# api-justiceirosdaalianca" 
+# api-justiceirosdaalianca
+[![Build status](https://ci.appveyor.com/api/projects/status/d0vpva0y5f5vgp3b?svg=true)](https://ci.appveyor.com/project/abelclopes/api-justiceirosdaalianca)
 
 
 docker build -t api-justiceirosdaalianca .
