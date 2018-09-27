@@ -1,6 +1,10 @@
 FROM microsoft/dotnet:2.1-aspnetcore-runtime  AS base
 WORKDIR /app
 
+RUN git clone https://github.com/abelclopes/app-justiceirosdaalianca.git /app/client
+RUN ls /app/client
+
+
 FROM microsoft/dotnet:2.1-sdk AS builder
 COPY . .
 RUN dotnet restore  
